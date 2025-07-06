@@ -7,14 +7,14 @@
     padding: 5em;
 }
 
-#start-button {
+.start-button {
+    margin-top: 3em;
     font-size: 3em;
-    margin: 3em;
-    width: 5em;
+    width: 6em;
     background: #0f0;
 }
 
-#start-button:hover {
+.start-button:hover {
     background: #afa;
     margin-top: 2.9em;
 }

@@ -13,16 +13,20 @@ const GameState = {
     questionText: '',
 }
 
+let generateQuestion;
+
 function init() {    
     var gameM = document.getElementById('game');
-    var startB = document.getElementById('start-button');
-    var startM = document.getElementById('main-menu');
+    var startMult = document.getElementById('start-mult');
+    var startAdd = document.getElementById('start-add');
+    var startSub = document.getElementById('start-sub');
+    var startDiv = document.getElementById('start-div');
 
     gameM.style.display = "none";
-    startB.addEventListener("click", () => {
-        startM.style.display = "none";
-        gameM.style.display = "flex";
-    });
+    startAdd.addEventListener("click", () => startGame(generateAddition));
+    startMult.addEventListener("click", () => startGame(generateMultiplication));
+    startSub.addEventListener("click", () => startGame(generateSubtraction));
+    startDiv.addEventListener("click", () => startGame(generateDivision));
 
     DisplayElements.question = document.getElementById('question');
     var a = document.getElementsByClassName('answer')
@@ -36,7 +40,16 @@ function init() {
     clearHistory();
 
     DisplayElements.score.innerHTML = `${GameState.score} / ${GameState.numQuestions}`;
+}
 
+function startGame(gen) {
+    var startM = document.getElementById('main-menu');
+    var gameM = document.getElementById('game');
+
+    startM.style.display = "none";
+    gameM.style.display = "flex";
+
+    generateQuestion = gen;
     generateQuestion();
 }
 
@@ -89,7 +102,7 @@ let selectAnswer = (index) => {
 }
 
 
-function generateQuestion() {
+let generateMultiplication = () => {
     var first = Math.ceil(Math.random() * 10);
     var second = Math.ceil(Math.random() * 10);
     var correct = first * second;
@@ -118,6 +131,92 @@ function generateQuestion() {
     }
 }
 
+let generateAddition = () => {
+    var first = Math.ceil(Math.random() * 10);
+    var second = Math.ceil(Math.random() * 10);
+    var correct = first + second;
+
+    var question = `${first} + ${second}`;
+
+    var wrongOne;
+    var wrongTwo;
+
+    do {
+        wrongOne = Math.floor(Math.random() * 3) + Math.max(1, correct - 5);
+    } while (wrongOne === correct);
+    
+    do {
+        wrongTwo = Math.floor(Math.random() * 3) + Math.max(1, correct - 5);
+    } while (wrongTwo === correct || wrongTwo === wrongOne);
+
+    var correctPosition = Math.floor(Math.random() * 3);
+
+    if (correctPosition === 0) {
+        setQuestion(question, correct, wrongOne, wrongTwo, 0);
+    } else if (correctPosition === 1) {
+        setQuestion(question, wrongOne, correct, wrongTwo, 1);
+    } else {
+        setQuestion(question, wrongOne, wrongTwo, correct, 2);
+    }
+}
+
+let generateSubtraction = () => {
+    var first = Math.ceil(Math.random() * 10);
+    var second = Math.ceil(Math.random() * 10);
+    var answer = first + second;
+
+    var question = `${answer} - ${first}`;
+
+    var wrongOne;
+    var wrongTwo;
+
+    do {
+        wrongOne = Math.floor(Math.random() * 3) + Math.max(1, Math.min(second - 5, 10));
+    } while (wrongOne === second);
+    
+    do {
+        wrongTwo = Math.floor(Math.random() * 3) + Math.max(1, Math.min(second - 5, 10));
+    } while (wrongTwo === second || wrongTwo === wrongOne);
+
+    var correctPosition = Math.floor(Math.random() * 3);
+
+    if (correctPosition === 0) {
+        setQuestion(question, second, wrongOne, wrongTwo, 0);
+    } else if (correctPosition === 1) {
+        setQuestion(question, wrongOne, second, wrongTwo, 1);
+    } else {
+        setQuestion(question, wrongOne, wrongTwo, second, 2);
+    }
+}
+
+let generateDivision = () => {
+    var first = Math.ceil(Math.random() * 10);
+    var second = Math.ceil(Math.random() * 10);
+    var answer = first * second;
+
+    var question = `${answer} : ${first}`;
+
+    var wrongOne;
+    var wrongTwo;
+
+    do {
+        wrongOne = Math.floor(Math.random() * 3) + Math.max(1, Math.min(second - 5, 10));
+    } while (wrongOne === second);
+    
+    do {
+        wrongTwo = Math.floor(Math.random() * 3) + Math.max(1, Math.min(second - 5, 10));
+    } while (wrongTwo === second || wrongTwo === wrongOne);
+
+    var correctPosition = Math.floor(Math.random() * 3);
+
+    if (correctPosition === 0) {
+        setQuestion(question, second, wrongOne, wrongTwo, 0);
+    } else if (correctPosition === 1) {
+        setQuestion(question, wrongOne, second, wrongTwo, 1);
+    } else {
+        setQuestion(question, wrongOne, wrongTwo, second, 2);
+    }
+}
 
 
 
